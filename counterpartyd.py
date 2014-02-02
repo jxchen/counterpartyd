@@ -16,7 +16,8 @@ from prettytable import PrettyTable
 
 import time
 import dateutil.parser
-from datetime import datetime
+import datetime
+import calendar
 from threading import Thread
 
 from lib import (config, api, zeromq, util, exceptions, bitcoin, blocks)
@@ -561,7 +562,7 @@ if __name__ == '__main__':
         json_print(bitcoin.transmit(unsigned_tx_hex, unsigned=args.unsigned))
 
     elif args.action == 'bet':
-        deadline = round(datetime.timestamp(dateutil.parser.parse(args.deadline)))
+        deadline = calendar.timegm(dateutil.parser.parse(args.deadline).utctimetuple())
         wager = util.devise(db, args.wager, 'XCP', 'input')
         counterwager = util.devise(db, args.counterwager, 'XCP', 'input')
         target_value = util.devise(db, args.target_value, 'value', 'input')
